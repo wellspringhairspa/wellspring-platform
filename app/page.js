@@ -30,6 +30,7 @@ export default function Home() {
       <footer style={{textAlign:'center', padding:'32px', borderTop:'1px solid rgba(122,139,111,0.15)', fontSize:'0.85rem', color:'#B0A89E'}}>
         2025 Wellspring by Molly Gee. All rights reserved.
       </footer>
+<p>{process.env.NEXT_PUBLIC_SUPABASE_URL}</p>
     </div>
   );
 }
