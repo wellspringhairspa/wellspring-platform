@@ -1,3 +1,6 @@
+Now let's update the profile page with the dynamic rows. Open the file:
+notepad app\dashboard\profile\page.js
+Select all with Ctrl + A, delete everything, and paste this:
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -8,7 +11,6 @@ export default function Profile() {
   const [message, setMessage] = useState('')
   const [profile, setProfile] = useState({
     services_offered: '',
-    retail_products: '',
     ohs_affiliate_link: '',
     equilife_affiliate_link: '',
     olive_tree_affiliate_link: '',
@@ -16,8 +18,9 @@ export default function Profile() {
     monat_affiliate_link: '',
     lifevantage_affiliate_link: '',
     fullscript_link: '',
-    additional_supplements: ''
   })
+  const [retailLinks, setRetailLinks] = useState([{ name: '', link: '' }])
+  const [additionalSupplements, setAdditionalSupplements] = useState([{ name: '', link: '' }])
 
   useEffect(() => {
     const init = async () => {
@@ -34,7 +37,20 @@ export default function Profile() {
         .select('*')
         .eq('practitioner_id', user.id)
         .single()
-      if (data) setProfile(data)
+      if (data) {
+        setProfile({
+          services_offered: data.services_offered || '',
+          ohs_affiliate_link: data.ohs_affiliate_link || '',
+          equilife_affiliate_link: data.equilife_affiliate_link || '',
+          olive_tree_affiliate_link: data.olive_tree_affiliate_link || '',
+          frequense_affiliate_link: data.frequense_affiliate_link || '',
+          monat_affiliate_link: data.monat_affiliate_link || '',
+          lifevantage_affiliate_link: data.lifevantage_affiliate_link || '',
+          fullscript_link: data.fullscript_link || '',
+        })
+        if (data.retail_links) setRetailLinks(data.retail_links)
+        if (data.additional_supplement_links) setAdditionalSupplements(data.additional_supplement_links)
+      }
     }
     init()
   }, [])
@@ -48,7 +64,12 @@ export default function Profile() {
     )
     const { error } = await supabase
       .from('practitioner_profiles')
-      .upsert({ ...profile, practitioner_id: user.id })
+      .upsert({
+        ...profile,
+        practitioner_id: user.id,
+        retail_links: retailLinks,
+        additional_supplement_links: additionalSupplements
+      })
     if (error) {
       setMessage('Error saving. Please try again.')
     } else {
@@ -57,10 +78,46 @@ export default function Profile() {
     setSaving(false)
   }
 
-  const inputStyle = {width:'100%', padding:'10px 12px', border:'1px solid rgba(122,139,111,0.3)', borderRadius:'4px', fontSize:'0.9rem', fontFamily:'Georgia, serif', marginBottom:'12px', backgroundColor:'#FDFCFA'}
-  const textareaStyle = {...inputStyle, minHeight:'100px', resize:'vertical'}
+  const updateRow = (arr, setArr, index, field, value) => {
+    const updated = [...arr]
+    updated[index][field] = value
+    setArr(updated)
+  }
+
+  const addRow = (arr, setArr) => setArr([...arr, { name: '', link: '' }])
+  const removeRow = (arr, setArr, index) => setArr(arr.filter((_, i) => i !== index))
+
+  const inputStyle = {padding:'10px 12px', border:'1px solid rgba(122,139,111,0.3)', borderRadius:'4px', fontSize:'0.9rem', fontFamily:'Georgia, serif', backgroundColor:'#FDFCFA'}
+  const textareaStyle = {...inputStyle, width:'100%', minHeight:'100px', resize:'vertical', marginBottom:'12px', display:'block'}
   const sectionStyle = {backgroundColor:'white', padding:'32px', borderRadius:'8px', border:'1px solid rgba(122,139,111,0.15)', marginBottom:'24px'}
   const labelStyle = {display:'block', fontSize:'0.8rem', letterSpacing:'0.08em', textTransform:'uppercase', color:'#7A8B6F', marginBottom:'6px'}
+
+  const DynamicRows = ({ arr, setArr, namePlaceholder, linkPlaceholder }) => (
+    <div>
+      {arr.map((row, i) => (
+        <div key={i} style={{display:'grid', gridTemplateColumns:'1fr 1fr auto', gap:'8px', marginBottom:'8px', alignItems:'center'}}>
+          <input
+            value={row.name}
+            onChange={e => updateRow(arr, setArr, i, 'name', e.target.value)}
+            placeholder={namePlaceholder}
+            style={inputStyle}
+          />
+          <input
+            value={row.link}
+            onChange={e => updateRow(arr, setArr, i, 'link', e.target.value)}
+            placeholder={linkPlaceholder}
+            style={inputStyle}
+          />
+          <button onClick={() => removeRow(arr, setArr, i)} style={{padding:'10px 14px', backgroundColor:'transparent', border:'1px solid rgba(196,149,106,0.4)', borderRadius:'4px', color:'#C4956A', cursor:'pointer', fontSize:'0.85rem'}}>
+            ✕
+          </button>
+        </div>
+      ))}
+      <button onClick={() => addRow(arr, setArr)} style={{marginTop:'8px', padding:'8px 20px', backgroundColor:'transparent', border:'1.5px solid #7A8B6F', borderRadius:'4px', color:'#7A8B6F', cursor:'pointer', fontSize:'0.85rem'}}>
+        + Add Row
+      </button>
+    </div>
+  )
 
   return (
     <div style={{minHeight:'100vh', backgroundColor:'#FAF7F2', fontFamily:'Georgia, serif'}}>
@@ -72,7 +129,7 @@ export default function Profile() {
       <div style={{maxWidth:'800px', margin:'0 auto', padding:'48px 24px'}}>
         <p style={{fontSize:'0.8rem', letterSpacing:'0.15em', textTransform:'uppercase', color:'#C4956A', marginBottom:'8px'}}>Account Setup</p>
         <h1 style={{fontSize:'2rem', color:'#3D3530', marginBottom:'8px'}}>Practitioner Profile</h1>
-        <p style={{color:'#B0A89E', marginBottom:'40px', fontSize:'0.9rem'}}>This information helps personalize the reports you generate for your clients.</p>
+        <p style={{color:'#B0A89E', marginBottom:'40px', fontSize:'0.9rem'}}>This information personalizes the reports you generate for your clients.</p>
 
         <div style={sectionStyle}>
           <h2 style={{fontSize:'1.1rem', color:'#3D3530', marginBottom:'20px'}}>Your Practice</h2>
@@ -83,18 +140,22 @@ export default function Profile() {
             style={textareaStyle}
             placeholder="e.g. Headspa scalp facials, trichology consultations, epigenetic hair scanning, laser therapy..."
           />
-          <label style={labelStyle}>Retail Products You Carry</label>
-          <textarea
-            value={profile.retail_products}
-            onChange={e => setProfile({...profile, retail_products: e.target.value})}
-            style={textareaStyle}
-            placeholder="e.g. LockRX, Arete, Keravive spray..."
+        </div>
+
+        <div style={sectionStyle}>
+          <h2 style={{fontSize:'1.1rem', color:'#3D3530', marginBottom:'8px'}}>Retail Products</h2>
+          <p style={{fontSize:'0.85rem', color:'#B0A89E', marginBottom:'20px'}}>Add products you carry and sell. Include a purchase link if you sell online.</p>
+          <DynamicRows
+            arr={retailLinks}
+            setArr={setRetailLinks}
+            namePlaceholder="Product name (e.g. LockRX Glow & Grow Shampoo)"
+            linkPlaceholder="Purchase link (optional)"
           />
         </div>
 
         <div style={sectionStyle}>
           <h2 style={{fontSize:'1.1rem', color:'#3D3530', marginBottom:'8px'}}>Supplement Affiliate Links</h2>
-          <p style={{fontSize:'0.85rem', color:'#B0A89E', marginBottom:'20px'}}>All fields are optional. Add your affiliate links so supplement recommendations in reports link directly to your account.</p>
+          <p style={{fontSize:'0.85rem', color:'#B0A89E', marginBottom:'20px'}}>All fields are optional. Add your affiliate links so supplement recommendations link directly to your account.</p>
 
           {[
             ['ohs_affiliate_link', 'OHS (Optimal Health Systems)', 'Your OHS affiliate link', null],
@@ -112,18 +173,19 @@ export default function Profile() {
                 type="url"
                 value={profile[key]}
                 onChange={e => setProfile({...profile, [key]: e.target.value})}
-                style={inputStyle}
+                style={{...inputStyle, width:'100%', marginBottom:'16px', display:'block'}}
                 placeholder={placeholder}
               />
             </div>
           ))}
 
-          <label style={labelStyle}>Additional Supplement Brands You Recommend</label>
-          <textarea
-            value={profile.additional_supplements}
-            onChange={e => setProfile({...profile, additional_supplements: e.target.value})}
-            style={textareaStyle}
-            placeholder="List any other supplement brands or products you recommend to clients..."
+          <label style={{...labelStyle, marginTop:'8px'}}>Additional Supplement Brands</label>
+          <p style={{fontSize:'0.85rem', color:'#B0A89E', marginBottom:'12px'}}>Add any other supplement brands you recommend with their affiliate links.</p>
+          <DynamicRows
+            arr={additionalSupplements}
+            setArr={setAdditionalSupplements}
+            namePlaceholder="Brand or product name"
+            linkPlaceholder="Affiliate link (optional)"
           />
         </div>
 
