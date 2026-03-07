@@ -51,26 +51,26 @@ export default function Dashboard() {
             <h3 style={{fontSize:'1.1rem', color:'#3D3530', marginBottom:'8px'}}>Root Cause Report Builder</h3>
             <p style={{fontSize:'0.9rem', color:'#7A7068', marginBottom:'20px', lineHeight:1.6}}>Build comprehensive hair loss reports from epigenetic scan data.</p>
             <a href="/dashboard/clients" style={{textDecoration:'none', display:'inline-block', backgroundColor:'#7A8B6F', color:'white', padding:'10px 24px', borderRadius:'4px', fontSize:'0.9rem'}}>
-  View Clients →
-</a>
+              View Clients →
+            </a>
           </div>
 
           <div style={{backgroundColor:'white', padding:'32px', borderRadius:'8px', border:'1px solid rgba(122,139,111,0.15)'}}>
             <div style={{fontSize:'1.5rem', marginBottom:'12px'}}>👤</div>
             <h3 style={{fontSize:'1.1rem', color:'#3D3530', marginBottom:'8px'}}>My Clients</h3>
             <p style={{fontSize:'0.9rem', color:'#7A7068', marginBottom:'20px', lineHeight:1.6}}>View and manage your client profiles and scan history.</p>
-            <button style={{backgroundColor:'#7A8B6F', color:'white', border:'none', padding:'10px 24px', borderRadius:'4px', cursor:'pointer', fontSize:'0.9rem'}}>
-              Coming Soon
-            </button>
+            <a href="/dashboard/clients" style={{textDecoration:'none', display:'inline-block', backgroundColor:'#7A8B6F', color:'white', padding:'10px 24px', borderRadius:'4px', fontSize:'0.9rem'}}>
+              View Clients →
+            </a>
           </div>
 
           <div style={{backgroundColor:'white', padding:'32px', borderRadius:'8px', border:'1px solid rgba(122,139,111,0.15)'}}>
             <div style={{fontSize:'1.5rem', marginBottom:'12px'}}>🌿</div>
-            <h3 style={{fontSize:'1.1rem', color:'#3D3530', marginBottom:'8px'}}>Resources</h3>
-            <p style={{fontSize:'0.9rem', color:'#7A7068', marginBottom:'20px', lineHeight:1.6}}>Access protocols, guides, and educational materials.</p>
-            <button style={{backgroundColor:'#7A8B6F', color:'white', border:'none', padding:'10px 24px', borderRadius:'4px', cursor:'pointer', fontSize:'0.9rem'}}>
-              Coming Soon
-            </button>
+            <h3 style={{fontSize:'1.1rem', color:'#3D3530', marginBottom:'8px'}}>My Profile</h3>
+            <p style={{fontSize:'0.9rem', color:'#7A7068', marginBottom:'20px', lineHeight:1.6}}>Manage your services, retail products, and supplement affiliate links.</p>
+            <a href="/dashboard/profile" style={{textDecoration:'none', display:'inline-block', backgroundColor:'#7A8B6F', color:'white', padding:'10px 24px', borderRadius:'4px', fontSize:'0.9rem'}}>
+              My Profile →
+            </a>
           </div>
         </div>
       </div>
