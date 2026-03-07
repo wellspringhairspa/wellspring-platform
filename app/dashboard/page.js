@@ -50,9 +50,9 @@ export default function Dashboard() {
             <div style={{fontSize:'1.5rem', marginBottom:'12px'}}>📋</div>
             <h3 style={{fontSize:'1.1rem', color:'#3D3530', marginBottom:'8px'}}>Root Cause Report Builder</h3>
             <p style={{fontSize:'0.9rem', color:'#7A7068', marginBottom:'20px', lineHeight:1.6}}>Build comprehensive hair loss reports from epigenetic scan data.</p>
-            <button style={{backgroundColor:'#7A8B6F', color:'white', border:'none', padding:'10px 24px', borderRadius:'4px', cursor:'pointer', fontSize:'0.9rem'}}>
-              Coming Soon
-            </button>
+            <a href="/dashboard/clients" style={{textDecoration:'none', display:'inline-block', backgroundColor:'#7A8B6F', color:'white', padding:'10px 24px', borderRadius:'4px', fontSize:'0.9rem'}}>
+  View Clients →
+</a>
           </div>
 
           <div style={{backgroundColor:'white', padding:'32px', borderRadius:'8px', border:'1px solid rgba(122,139,111,0.15)'}}>
