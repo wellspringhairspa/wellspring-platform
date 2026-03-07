@@ -1,6 +1,3 @@
-Now let's update the profile page with the dynamic rows. Open the file:
-notepad app\dashboard\profile\page.js
-Select all with Ctrl + A, delete everything, and paste this:
 'use client'
 
 import { useState, useEffect } from 'react'
