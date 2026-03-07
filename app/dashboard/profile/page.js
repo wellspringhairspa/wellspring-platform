@@ -99,10 +99,10 @@ export default function Profile() {
           {[
             ['ohs_affiliate_link', 'OHS (Optimal Health Systems)', 'Your OHS affiliate link', null],
             ['equilife_affiliate_link', 'EquiLife', 'Your EquiLife affiliate link', null],
-            ['olive_tree_affiliate_link', 'Olive Tree People', 'Your Olive Tree People affiliate link', 'https://www.olivetreepeople.com — register under Molly Gee'],
-            ['frequense_affiliate_link', 'Frequense', 'Your Frequense affiliate link', 'Register under Molly Gee at frequense.com'],
-            ['monat_affiliate_link', 'Monat', 'Your Monat affiliate link', 'Register under Molly Gee at monat.com'],
-            ['lifevantage_affiliate_link', 'LifeVantage', 'Your LifeVantage affiliate link', 'Register under Molly Gee at lifevantage.com'],
+            ['olive_tree_affiliate_link', 'Olive Tree People', 'Your Olive Tree People affiliate link', 'Create your affiliate account under Wellspring at olivetreepeople.com'],
+            ['frequense_affiliate_link', 'Frequense', 'Your Frequense affiliate link', 'Create your affiliate account under Wellspring at frequense.com'],
+            ['monat_affiliate_link', 'Monat', 'Your Monat affiliate link', 'Create your affiliate account under Wellspring at monat.com'],
+            ['lifevantage_affiliate_link', 'LifeVantage', 'Your LifeVantage affiliate link', 'Create your affiliate account under Wellspring at lifevantage.com'],
             ['fullscript_link', 'Fullscript', 'Your Fullscript dispensary link', null],
           ].map(([key, label, placeholder, hint]) => (
             <div key={key}>
