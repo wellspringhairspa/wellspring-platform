@@ -104,7 +104,7 @@ const FORCE_MULTIPLIERS = {
   Exposures: [
     'Frequency Interference',
     'Radiation',
-    'Heavy Metals',
+    'Toxic Metals',
     'Chemicals / Hydrocarbons'
   ]
 }
