@@ -13,7 +13,6 @@ export default function Login() {
       process.env.NEXT_PUBLIC_SUPABASE_URL,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
     )
-
     if (type === 'login') {
       const { error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) setMessage(error.message)
@@ -23,6 +22,12 @@ export default function Login() {
       if (error) setMessage(error.message)
       else setMessage('Check your email to confirm your account!')
     }
+  }
+
+  const handleSubscribe = async () => {
+    const res = await fetch('/api/create-checkout-session', { method: 'POST' })
+    const data = await res.json()
+    if (data.url) window.location.href = data.url
   }
 
   return (
@@ -50,6 +55,12 @@ export default function Login() {
         <button onClick={() => handleAuth('signup')} style={{width:'100%', padding:'14px', backgroundColor:'transparent', color:'#7A8B6F', border:'1.5px solid #7A8B6F', borderRadius:'4px', fontSize:'0.95rem', cursor:'pointer'}}>
           Create Account
         </button>
+        <div style={{textAlign:'center', marginTop:'24px', paddingTop:'24px', borderTop:'1px solid rgba(122,139,111,0.15)'}}>
+          <p style={{fontSize:'0.85rem', color:'#B0A89E', marginBottom:'12px'}}>New practitioner? Start your subscription first.</p>
+          <button onClick={handleSubscribe} style={{width:'100%', padding:'14px', backgroundColor:'#C4956A', color:'white', border:'none', borderRadius:'4px', fontSize:'0.95rem', cursor:'pointer'}}>
+            Subscribe — $99/month
+          </button>
+        </div>
         {message && <p style={{marginTop:'16px', textAlign:'center', fontSize:'0.9rem', color:'#C4956A'}}>{message}</p>}
       </div>
     </div>
